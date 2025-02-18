@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: 45 100% 50%;
+    --primary-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    --primary: 45 100% 50%;
+    --primary-foreground: 0 0% 100%;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-gray-100 dark:bg-gray-900;
+  }
+}

@@ -1,8 +1,8 @@
 import React from 'react';
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingCart, 
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
   Users,
   X,
   Menu
@@ -15,11 +15,11 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ 
-  isOpen, 
-  currentPage, 
+const Sidebar: React.FC<SidebarProps> = ({
+  isOpen,
+  currentPage,
   setCurrentPage,
-  toggleSidebar 
+  toggleSidebar
 }) => {
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -29,25 +29,35 @@ const Sidebar: React.FC<SidebarProps> = ({
   ];
 
   return (
-    <div 
-      className={`${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      } fixed lg:relative lg:translate-x-0 z-30 h-screen bg-black transition-transform duration-300 ease-in-out`}
-    >
-      <div className="flex flex-col h-full w-64">
-        <div className="flex items-center justify-between h-16 px-4 bg-black text-white">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-            AdminPro
-          </h1>
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 lg:hidden z-40"
+          onClick={toggleSidebar}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed top-0 left-0 h-full w-64 bg-gray-900 z-50
+          transform transition-transform duration-300 ease-in-out
+          lg:translate-x-0 lg:static lg:h-screen
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+      >
+        <div className="flex items-center justify-between p-4 border-b border-gray-800">
+          <h1 className="text-xl font-bold text-white">AdminPro</h1>
           <button 
             onClick={toggleSidebar}
-            className="lg:hidden text-white hover:text-orange-500 transition-colors"
+            className="p-1 rounded-lg hover:bg-gray-800 lg:hidden"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            <X className="h-6 w-6 text-white" />
           </button>
         </div>
 
-        <nav className="flex-1 px-4 py-4">
+        <nav className="p-4">
           {menuItems.map(({ id, icon: Icon, label }) => (
             <button
               key={id}
@@ -55,19 +65,27 @@ const Sidebar: React.FC<SidebarProps> = ({
               className={`
                 w-full flex items-center px-4 py-3 mb-2 text-white rounded-lg
                 transition-colors duration-200
-                ${currentPage === id 
-                  ? 'bg-orange-500' 
+                ${currentPage === id
+                  ? 'bg-orange-500'
                   : 'hover:bg-orange-500/20'
                 }
               `}
             >
-              <Icon size={20} />
-              <span className="ml-4">{label}</span>
+              <Icon className="h-5 w-5 mr-3" />
+              <span>{label}</span>
             </button>
           ))}
         </nav>
-      </div>
-    </div>
+      </aside>
+
+      {/* Mobile Toggle Button */}
+      <button
+        onClick={toggleSidebar}
+        className="fixed bottom-4 right-4 p-3 bg-orange-500 rounded-full shadow-lg lg:hidden z-50"
+      >
+        <Menu className="h-6 w-6 text-white" />
+      </button>
+    </>
   );
 };
 
